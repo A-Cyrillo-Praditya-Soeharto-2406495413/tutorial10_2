@@ -11,6 +11,9 @@ async fn handle_connection(
     mut ws_stream: WebSocketStream<TcpStream>,
     bcast_tx: Sender<String>,
 ) -> Result<(), Box<dyn Error + Send + Sync>> {
+    ws_stream
+        .send(Message::text("Welcome to chat! Type a message"))
+        .await?;
     let mut bcast_rx = bcast_tx.subscribe();
 
     loop {
@@ -21,7 +24,9 @@ async fn handle_connection(
                     Some(Ok(msg)) if msg.is_text() => {
                         let text = msg.as_text().unwrap_or("");
                         println!("{addr:?} sent: {text}");
-                        let _ = bcast_tx.send(text.to_string());
+                        
+                        let formatted_msg = format!("[{addr}] berkata: {text}");
+                        let _ = bcast_tx.send(formatted_msg);
                     }
                     Some(Ok(msg)) if msg.is_close() => {
                         println!("{addr:?} closed connection");

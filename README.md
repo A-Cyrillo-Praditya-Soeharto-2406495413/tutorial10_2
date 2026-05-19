@@ -27,3 +27,9 @@ Kedua sisi menggunakan crate tokio-websockets:
 - Client: Menggunakan ClientBuilder untuk terhubung ke ws://127.0.0.1:8080.
 
 Sebagai protokol connection-oriented, server dan client harus menggunakan nomor port yang sama agar bisa berkomunikasi. Server terikat ke port 8080 untuk menunggu koneksi masuk, sementara client terhubung langsung ke port tersebut.
+
+![alt text](server2.3.png)
+![alt text](client1_2.3.png)
+![alt text](client2_2.3.png)
+
+saya melakukan perubahan pada server.rs di fungsi handle_connection. Ketika server menerima pesan saya menambahkan format!() untuk membuat string baru seperti format!("[{addr}] berkata: {teks}") yang meambahkan detail pengirim. Hal ini saya lakukan agar setiap klien yang terhubung dapat mengetahui siapa yang mengirim pesan tersebut.
